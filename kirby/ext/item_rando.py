@@ -41,11 +41,11 @@ class RandoParamsView(discord.ui.View):
     @discord.ui.button(label='Set seeds', emoji='🌱')
     async def seeds_button(self, interaction: discord.Interaction[DiscordBot], button: discord.ui.Button):
         modal = (discord.ui.Modal(title='Enter the randomizer seeds')
-            .add_item(discord.ui.TextInput(label='Pokemon randomizer seed'))
+            #.add_item(discord.ui.TextInput(label='Pokemon randomizer seed'))
             .add_item(discord.ui.TextInput(label='Item randomizer seed')))
         await interaction.response.send_modal(modal)
         if not await modal.wait():
-            self.monster_seed = str(modal.children[0]) or self.monster_seed
+            #self.monster_seed = str(modal.children[0]) or self.monster_seed
             self.item_seed = str(modal.children[0]) or self.item_seed
 
     @discord.ui.button(label='Generate!', emoji='🎲')
@@ -117,10 +117,11 @@ class RandoParamsView(discord.ui.View):
     async def invoke_item_rando(self, baserom: pathlib.Path, preset: pathlib.Path, seed: str) -> pathlib.Path:
         randomized_rom = tempfile.mkstemp(suffix='.gbc')
         await self.call_randomizer(
-            self.bot.cl_args.item_rando_path / 'CLI.py',
+            self.bot.cl_args.item_rando_path / 'Pokemon Crystal Item Randomizer', 'cli',
             '-i', baserom,
             '-o', randomized_rom,
-            '-s', preset
+            '-m', preset.relative_to(self.bot.cl_args.item_rando_path),
+            '-s', seed
         )
         return randomized_rom
     
