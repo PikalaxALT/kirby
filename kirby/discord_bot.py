@@ -15,6 +15,7 @@ class DiscordBot(commands.Bot):
     def __init__(self, cl_args: 'CLI', *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.cl_args = cl_args
+        self.package_dir = pathlib.Path(__file__).parent
 
         # Prepopulate choices
         self.upr_settings_files = set(self.cl_args.upr_zx_settings_path.glob('*.rnqs'))

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0", "discord.py>=2.2.0", "python-dotenv>=1.0.0", "bsdiff4>=1.2.3"]
+requires = ["setuptools>=61.0", "discord.py>=2.2.0", "python-dotenv>=1.0.0", "snakemake>=7.26.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -20,3 +20,6 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/PikalaxALT/kirby.git"
 "Bug Tracker" = "https://github.com/PikalaxALT/kirby/issues"
+
+[tool.setuptools.package-data]
+kirby = ["Snakefile", "snakeconf.yml"]

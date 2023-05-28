@@ -4,10 +4,11 @@ A Discord bot to generate patch files that, when applied to a vanilla copy of Po
 
 ## Setup
 
-Create a Python virtual environment with the packages outlined in `requirements.txt`.
+Create a Python virtual environment with the packages outlined in `pyproject.toml`.
 
 You will need to provide the following resources:
 
+- Docker, to build the base ROMs
 - Discord bot token, required for the bot to login to discord
 - Vanilla copy of [Pokemon Crystal (U)(1.1)](/pret/pokecrystal)
 - Unmodified copy of [Pokemon Crystal Speedchoice v7.4.13 or later](/choatix/pokecrystal-speedchoice/releases/tag/latest)
