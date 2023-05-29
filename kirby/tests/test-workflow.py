@@ -4,7 +4,6 @@ import pathlib
 import os
 import atexit
 import shutil
-import platform
 
 package_dir = pathlib.Path(__file__).resolve().parent.parent
 tempdir = package_dir / '.tmp'
@@ -21,7 +20,8 @@ def call_snakemake(target: str | os.PathLike):
             'outfile': tempdir / 'outs.ips'
         },
         delete_temp_output=False,
-        workdir=package_dir
+        workdir=package_dir,
+        forcetargets=[str(target)]
     )
 
 

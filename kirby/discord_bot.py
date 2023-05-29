@@ -1,9 +1,7 @@
 import pathlib
-import discord
 import os
 import asyncio
 from discord.ext import commands
-from discord import app_commands
 from . import __module_dir__
 
 import typing
@@ -19,7 +17,7 @@ class DiscordBot(commands.Bot):
 
         # Prepopulate choices
         self.upr_settings_files = set(self.cl_args.upr_zx_settings_path.glob('*.rnqs'))
-        self.item_rando_presets = set(self.cl_args.item_rando_path.glob('Modes/*.yml'))
+        self.item_rando_presets = set(self.cl_args.item_rando_path.parent.glob('Modes/*.yml'))
 
     async def setup_hook(self):
-        await asyncio.gather(*(self.load_extension(str(p.relative_to(__module_dir__).with_suffix('')).replace(os.sep, '.')) for p in (__module_dir__ / 'ext').glob('*.py')))
+        await asyncio.gather(*(self.load_extension(str(p.relative_to(__module_dir__.parent).with_suffix('')).replace(os.sep, '.')) for p in (__module_dir__ / 'ext').glob('*.py') if p.stem != '__init__'))

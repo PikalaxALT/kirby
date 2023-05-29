@@ -1,0 +1,136 @@
+#!/usr/bin/env snakemake
+
+import platform
+import requests
+import pathlib
+import os
+import tempfile
+import atexit
+import shutil
+
+configfile: 'snakeconf.yml'
+
+is_windows = platform.system() == 'Windows'
+
+_exe_extension = '.exe' if is_windows else ''
+_zip_name = f'ItemRando{"" if is_windows else "CLI-Linux"}'
+_zip_dir = 'Pokemon Crystal Item Randomizer' if is_windows else 'ItemRandoCLI-Linux'
+_flips = config['flips']['Windows' if is_windows else None]
+
+_item_rando_cli = pathlib.Path(config['item_rando']['Windows' if is_windows else None]).resolve()
+
+_speedchoice_version = config['speedchoice_version']
+_speedchoice_version_no_dots = _speedchoice_version.replace('.', '')
+_zxplus_version = config['zxplus_version']
+_item_rando_version = config['item_rando_version']
+
+config['outfile'] = pathlib.Path(config['outfile']).resolve()
+os.makedirs(config['outfile'].parent, exist_ok=True)
+
+if 'tempdir' not in config:
+    config['tempdir'] = pathlib.Path(tempfile.mkdtemp())
+else:
+    config['tempdir'] = pathlib.Path(config['tempdir']).resolve()
+os.makedirs(config['tempdir'], exist_ok=True)
+
+
+rule all:
+    input:
+        config['outfile'],
+
+rule resources:
+    input:
+        config['vanilla_rom'],
+        config['speedchoice_rom'],
+        config['zxplus_jar'],
+        config['item_rando']['Windows' if is_windows else None],
+        config['flips']['Windows' if is_windows else None],
+
+rule install_zx:
+    output:
+        config['zxplus_jar'],
+    params:
+        version=_zxplus_version,
+    shell:
+        'wget -O {output} https://github.com/choatix/zxplus/releases/download/v{params.version}/universal-pokemon-randomizer-zx.jar'
+
+rule install_item_rando:
+    params:
+        exe_extension = _exe_extension,
+        zip_name = _zip_name,
+        zip_dir = _zip_dir,
+        version = _item_rando_version,
+    output:
+        config['item_rando']['Windows' if is_windows else None],
+    shell:
+        'wget -q -nc https://github.com/choatix/Pokemon-Crystal-Item-Randomizer/releases/download/v{params.version}/{params.zip_name}.zip ' \
+        '&& unzip -oqq {params.zip_name}.zip '
+        '&& rsync -dLr "{params.zip_dir}"/* resources/item-rando/ ' \
+        '&& rm -rf "{params.zip_dir}"'
+
+rule build_baserom:
+    output:
+        config['vanilla_rom'],
+    params:
+        bind_dir = pathlib.Path(config['vanilla_rom']).parent.resolve()
+    shell:
+        'docker run -v {params.bind_dir}:/rom -w /rom kemenaran/rgbds:0.6.0 make crystal11'
+
+rule download_flips:
+    output:
+        _flips,
+    shell:
+        'wget -q -nc https://dl.smwcentral.net/11474/floating.zip ' \
+        '&& unzip -qqo floating.zip -d floating ' \
+        '&& rm floating.zip'
+
+rule download_speedchoice:
+    input:
+        baserom=config['vanilla_rom'],
+        flips=_flips,
+    output:
+        config['speedchoice_rom'],
+    params:
+        version=_speedchoice_version,
+        version_nodots=_speedchoice_version_no_dots,
+    shell:
+        'wget -q -nc https://github.com/choatix/pokecrystal-speedchoice/releases/download/v{params.version}/Speedchoice.zip ' \
+        '&& unzip -qqo Speedchoice.zip -d Speedchoice ' \
+        '&& "{input.flips}" -a Speedchoice/Patches/VTo{params.version_nodots}.ips {input.baserom} {output} ' \
+        '&& rm -rf Speedchoice Speedchoice.zip'
+
+rule invoke_zx:
+    input:
+        baserom=ancient(config['speedchoice_rom']),
+        jar=config['zxplus_jar'],
+        settings=expand('{settings}/{preset}.rnqs', settings=config['zxplus_settings'], preset=config['zx_preset']),
+    params:
+        seed=expand('{zx_seed}', zx_seed=config['zx_seed']),
+    output:
+        zxrom=temporary(config['tempdir'] / 'step1.gbc'),
+    shell:
+        'java -Xmx768M -jar {input.jar} cli -i {input.baserom} -o {output.zxrom} -s {input.settings}'
+
+rule invoke_itemrando:
+    input:
+        zxrom=config['tempdir'] / 'step1.gbc',
+        cli=_item_rando_cli,
+        settings=expand(_item_rando_cli.parent / 'Modes' / '{item_preset}.yml', item_preset=config['item_preset']),
+    output:
+        temporary(config['tempdir'] / 'step2.gbc'),
+    params:
+        seed=expand('{item_seed}', item_seed=config['item_seed']),
+        cli_parent=_item_rando_cli.parent,
+        cli_name=_item_rando_cli.name,
+    shell:
+        'cd {params.cli_parent} && "{params.cli_name}" cli -i {input.zxrom} -o {output} -m {input.settings}' + (' -s {params.seed}' if config['item_seed'] else '')
+
+rule create_patchfile:
+    input:
+        randorom=config['tempdir'] / 'step2.gbc',
+        baserom=config['vanilla_rom'],
+        flips=config['flips']['Windows' if is_windows else None],
+    output:
+        config['outfile'],
+    shell:
+        '"{input.flips}" -c {input.baserom} {input.randorom} {output}'
