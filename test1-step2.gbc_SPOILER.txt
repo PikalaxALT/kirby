@@ -1,0 +1,278 @@
+CIR Version: 7.1.19
+Mode: Extreme Logic
+ModifierHash: c6a44ed386141f3d9d89bedbd0abc9e6
+Modifiers: ;De-Randomize Leftovers;Definitely no early Sabrina;Enable Tin Tower;Force
+  early fly V2;Nerf Ho-Oh Chamber;No Vanilla Basement;No early basement;Progressive
+  Rods;Randomize Pokegear and Pokegear Cards;Remove cut tree in Ilex;Skip E4 and fight
+  Red;Skip returning to New Bark;Start With Bike;Vanilla Clair;
+RNG Seed: 2ONC3I4LHJ
+Race: 789c05c14b0ec2300c05c0c3640f2fcf8d93ae1112457cce1027ce8a0a09ba80db77e6feeefe3d9e7fdbc7573ffcd757a8a68809a6d6aa9b25e658e89d63822116043e1f2759a6dbe51a52d3225051cd2c90b97508c85cc93ad0c70e3e071a50
+Solution:
+  Basement Key: Rock Tunnel PP UP
+  Boulder Badge: Rocket Base 3F Protein
+  Card Key: Power Plant Activated
+  Cascade Badge: Ruins of Alph Water Chamber 2
+  Clear Bell: Route 44 Max Repel
+  Cut: Mt. Silver Full Restore
+  Earth Badge: Saffron City Gym Badge
+  Expansion Card: Rocket Base 3F Full Heal
+  Flash: Ice Path Full Heal
+  Fly: Rocket Base 3F Ultra Ball
+  Fog Badge: Burned Tower Rock Smash Item
+  Glacier Badge: Tin Tower Max Elixer
+  Hive Badge: Goldenrod City Gym
+  Lost Item: Mt Mortar Revive
+  Machine Part: Whirl Islands B1 Full Restore
+  Marsh Badge: Elm SS Ticket
+  Mineral Badge: Union Cave Floor 3 Hyper Potion
+  Mystery Egg: Viridian Dream Eater TM
+  Pass: Ice Path Rest TM
+  Plain Badge: Jasmine TM
+  Pokegear: Whirl Islands B2 Max Revive
+  Radio Card: Ruins of Alph Light Chamber 2
+  Rainbow Badge: Violet City PP UP
+  Rainbow Wing: Elm Aide Potion
+  Red Scale: Dark Cave Black Glasses
+  Rising Badge: National Park Quick Claw
+  S S Ticket: Tin Tower Nugget
+  Secret Potion: Union Cave Floor 1 Potion
+  Soul Badge: Mt Mortar Inner Escape Rope
+  Squirtbottle: Union Cave Swift TM
+  Storm Badge: Mt Mortar Carbos
+  Strength: Mt Mortar Max Potion
+  Surf: Sprout Tower X Accuracy
+  Thunder Badge: Whirl Islands Calcium
+  Volcano Badge: Ilex Cut HM
+  Waterfall: Ruins of Alph Rope Chamber 4
+  Whirlpool: Ice Path Waterfall HM
+  Zephyr Badge: Burned Tower Strength Item
+Useless Stuff:
+  Azalea Town Gym Badge: AMULET_COIN
+  Bike Shop: TM_SOLARBEAM
+  Blackthorn City Gym Badge: PSNCUREBERRY
+  Buena Item: ULTRA_BALL
+  Bugsy TM: OLD_ROD
+  Celadon City Gym Badge: TM_SHADOW_BALL
+  Cerulean City Gym Badge: CHARCOAL
+  Charcoal Kiln: NUGGET
+  Chuck TM: MAX_ETHER
+  Cianwood City Gym Badge: PP_UP
+  Cianwood Fly HM: TM_DEFENSE_CURL
+  Cinnabar Island Gym Badge: FULL_HEAL
+  Clair TM: NUGGET
+  Coin Case Underground: TM_SWIFT
+  Copycat Rail Pass: CALCIUM
+  Dance Theatre Surf HM: PARLYZ_HEAL
+  Dark Cave Blackthorn Revive: X_DEFEND
+  Dark Cave Snore TM: PP_UP
+  Dark Cave Violet Dire Hit: ANTIDOTE
+  Dark Cave Violet Full Heal: CARBOS
+  Dark Cave Violet Hyper Potion: HP_UP
+  Dark Cave Violet Potion: RARE_CANDY
+  Department Store Basement 1: MAX_REPEL
+  Department Store Basement 2: TM_SLEEP_TALK
+  Department Store Basement 3: HYPER_POTION
+  Department Store Basement 4 Underground: DIRE_HIT
+  Dojo Band: TM_EARTHQUAKE
+  Dragons Den Calcium: ULTRA_BALL
+  Dragons Den Dragon Fang: PP_UP
+  Dragons Den Max Elixer: POKE_BALL
+  Ecruteak City Gym Badge: FULL_RESTORE
+  Elm Aide Pokeballs: PP_UP
+  Elm Master Ball: BURN_HEAL
+  Erika TM: TM_ROCK_SMASH
+  Expansion Card Gift: X_ATTACK
+  Falkner TM: ENGINE_POKEDEX
+  Flower Shop: FULL_RESTORE
+  Fuchsia City Gym Badge: TM_THIEF
+  Goldenrod Tunnel Full Heal: REVIVE
+  Goldenrod Tunnel Max Ether: TM_SWEET_SCENT
+  Goldenrod Tunnel Rocket Attack: SUPER_POTION
+  Goldenrod Tunnel Sleep Talk TM: PP_UP
+  Goldenrod Tunnel Smoke Ball: ANTIDOTE
+  Goldenrod Tunnel Ultra Ball: HYPER_POTION
+  Good Rod Guru: MOON_STONE
+  Headbutt Guy: RARE_CANDY
+  Hidden Machine Part: AWAKENING
+  Ice Path Iron: TM_DYNAMICPUNCH
+  Ice Path Max Potion: ESCAPE_ROPE
+  Ice Path Nevermeltice: NEVERMELTICE
+  Ice Path PP Up: FULL_HEAL
+  Ice Path Protein: TM_STEEL_WING
+  Ilex Forest Antidote: CLEANSE_TAG
+  Ilex Forest Ether: MAX_ELIXER
+  Ilex Forest Revive: SMOKE_BALL
+  Ilex Forest X Attack: SILVER_WING
+  Itemfinder House: ETHER
+  Janine TM: NUGGET
+  Kenya Gate Item: TM_DIG
+  King's Rock Guy: MAX_ETHER
+  Kurt's Lure Ball: PARLYZ_HEAL
+  Lake Of Rage Elixer: REVIVE
+  Lake of Rage Detect TM: ULTRA_BALL
+  Lake of Rage Hidden Power TM: MAX_ELIXER
+  Lighthouse Ether: CALCIUM
+  Lighthouse Rare Candy: FULL_RESTORE
+  Lighthouse Super Potion: RARE_CANDY
+  Lighthouse Super Repel: ELIXER
+  Lighthouse Swagger TM: MAX_ELIXER
+  Mahogany Town Gym Badge: TM_MUD_SLAP
+  Miracle Seed Man: ESCAPE_ROPE
+  Morty TM: MAX_ETHER
+  Mr Psychic TM: ULTRA_BALL
+  Mr. Pokemon's EXP Share: PROTEIN
+  Mr. Pokemon's Egg: REVIVE
+  Mt Mortar Defense Curl TM: HYPER_POTION
+  Mt Mortar Dragon Scale: TM_FURY_CUTTER
+  Mt Mortar Elixer: REVIVE
+  Mt Mortar Ether: QUICK_CLAW
+  Mt Mortar Full Restore: SOFT_SAND
+  Mt Mortar Inner Hyper Potion: MAX_REVIVE
+  Mt Mortar Iron: FULL_HEAL
+  Mt Mortar Lower Hyper Potion: IRON
+  Mt Mortar Max Ether: FULL_HEAL
+  Mt Mortar Max Potion Number 2: MAX_POTION
+  Mt Mortar Max Revive: DRAGON_FANG
+  Mt Mortar Nugget: MAX_POTION
+  Mt Mortar PP Up: ULTRA_BALL
+  Mt Mortar Rare Candy: CALCIUM
+  Mt Mortar Ultra Ball: MAX_POTION
+  Mt Mortar Upper Escape Rope: ITEMFINDER
+  Mt. Silver 1F Ultra Ball: MAX_REVIVE
+  Mt. Silver 2F Ultra Ball: TM_DETECT
+  Mt. Silver Calcium: ETHER
+  Mt. Silver Escape Rope: ENERGYPOWDER
+  Mt. Silver Max Elixer: ELIXER
+  Mt. Silver Max Protein: DRAGON_SCALE
+  Mt. Silver Max Revive: FULL_HEAL
+  Mt. Silver PP UP: PROTEIN
+  Mystic Water Man: HEAL_POWDER
+  National Park Dig TM: MAX_ELIXER
+  National Park Parlyz Heal: DIRE_HIT
+  Oak Pokedex: PROTEIN
+  Old Rod Guru: ULTRA_BALL
+  Olivine City Gym Badge: TM_ROAR
+  Olivine Strength HM: SUPER_POTION
+  Pewter City Gym Badge: ELIXER
+  Pokegear Gift: TM_GIGA_DRAIN
+  Pryce TM: HP_UP
+  Radio Card Quiz: MOON_STONE
+  Radio Tower Pink Bow: SUPER_ROD
+  Radio Tower Rockets Part 1: PINK_BOW
+  Radio Tower Rockets Part 2: TM_STEEL_WING
+  Radio Tower Sunny Day TM: FOCUS_BAND
+  Radio Tower Ultra Ball: RARE_CANDY
+  Rainbow Wing Gift: GOOD_ROD
+  Red Scale Dropped: MAX_REVIVE
+  Rock Smash Guy: GREAT_BALL
+  Rock Tunnel Elixer: X_ATTACK
+  Rock Tunnel Iron: TM_IRON_TAIL
+  Rock Tunnel Revive: NUGGET
+  Rock Tunnel Steel Wing TM: STARDUST
+  Rocket Base 1F Guard Spec: CHARCOAL
+  Rocket Base 1F Hyper Potion: MAX_POTION
+  Rocket Base 1F Nugget: IRON
+  Rocket Base 2F Thief TM: RARE_CANDY
+  Rocket Base 3F Ice Heal: MAX_POTION
+  Rocket Base 3F X Special: HYPER_POTION
+  Rocket Base Whirlpool HM: HP_UP
+  Route 12 Calcium: NUGGET
+  Route 12 Nugget: MYSTIC_WATER
+  Route 15 PP Up: TM_HEADBUTT
+  Route 2 Carbos: TM_RAIN_DANCE
+  Route 2 Dire Hit: RARE_CANDY
+  Route 2 Elixer: X_SPECIAL
+  Route 2 Max Potion: CARBOS
+  Route 2 Nugget House: NUGGET
+  Route 25 Nugget: MAX_POTION
+  Route 25 Protein: IRON
+  Route 26 Max Elixer: PROTEIN
+  Route 27 Rare Candy: ESCAPE_ROPE
+  Route 27 Solar Beam TM: HP_UP
+  Route 28 Steel Wing TM: MASTER_BALL
+  Route 29 Potion: ELIXER
+  Route 30 Antidote: LURE_BALL
+  Route 30 Berry Man: TM_SUNNY_DAY
+  Route 31 Kenya Item: GUARD_SPEC
+  Route 31 Pokeball: TM_ZAP_CANNON
+  Route 31 Potion: POTION
+  Route 32 Great Ball: ULTRA_BALL
+  Route 32 Repel: TM_ENDURE
+  Route 32 Roar Dude: ULTRA_BALL
+  Route 34 Nugget: X_ACCURACY
+  Route 35 Rollout TM: TM_DRAGONBREATH
+  Route 4 HP UP: TM_ROLLOUT
+  Route 42 Middle Island Super Potion: REVIVAL_HERB
+  Route 42 Ultra Ball: FULL_RESTORE
+  Route 43 Max Ether: POTION
+  Route 43 Sludge Bomb TM: NUGGET
+  Route 44 Max Revive: FULL_RESTORE
+  Route 44 Ultra Ball: ICE_HEAL
+  Route 45 Elixer: HYPER_POTION
+  Route 45 Max Potion: GOLD_BERRY
+  Route 45 Nugget: TM_ATTRACT
+  Route 45 Revive: POKE_BALL
+  Route 46 X Speed: BLUE_CARD
+  Route 5 Cleanse Tag: RARE_CANDY
+  Ruins of Alph Ho Oh Chamber 1: FULL_HEAL
+  Ruins of Alph Ho Oh Chamber 2: MAX_ELIXER
+  Ruins of Alph Ho Oh Chamber 3: ULTRA_BALL
+  Ruins of Alph Ho Oh Chamber 4: SUPER_POTION
+  Ruins of Alph Light Chamber 1: HEAL_POWDER
+  Ruins of Alph Light Chamber 3: ETHER
+  Ruins of Alph Light Chamber 4: NUGGET
+  Ruins of Alph Rope Chamber 1: ESCAPE_ROPE
+  Ruins of Alph Rope Chamber 2: TM_SNORE
+  Ruins of Alph Rope Chamber 3: MIRACLE_SEED
+  Ruins of Alph Water Chamber 1: ULTRA_BALL
+  Ruins of Alph Water Chamber 3: STAR_PIECE
+  Ruins of Alph Water Chamber 4: ESCAPE_ROPE
+  SS Aqua: BLACKGLASSES
+  Secret Potion Man: BERRY
+  Silph Co Upgrade: GOLD_BERRY
+  Silver Wing Old Man: NUGGET
+  Slowpoke Well Floor 1 Super Potion: TM_SWAGGER
+  Slowpoke Well Rain Dance TM: POTION
+  Soft Sand Girls: SUPER_REPEL
+  Sprout Tower Escape Rope: HP_UP
+  Sprout Tower Flash HM: TM_REST
+  Sprout Tower Parlyz Heal: GREAT_BALL
+  Sprout Tower Potion: EXP_SHARE
+  Super Rod Guru: ELIXER
+  Sweet Scent Girl: CALCIUM
+  Tin Tower Escape Rope: PP_UP
+  Tin Tower Full Heal: POTION
+  Tin Tower Full Restore: TM_HIDDEN_POWER
+  Tin Tower HP Up: MAX_REVIVE
+  Tin Tower Max Potion: ULTRA_BALL
+  Tin Tower Max Revive: REVIVE
+  Tin Tower PP Up: MYSTERYBERRY
+  Tin Tower Rare Candy: ENERGY_ROOT
+  Tin Tower Ultra Ball: POTION
+  Tohjo Falls Moon Stone: ESCAPE_ROPE
+  Union Cave Floor 1 Awakening: UP_GRADE
+  Union Cave Floor 1 Great Ball: X_SPEED
+  Union Cave Floor 1 X Attack: MYSTERYBERRY
+  Union Cave Floor 2 X Defend: ULTRA_BALL
+  Union Cave Floor 3 Elixir: BERRY
+  Vermilion City Fan Club President: KINGS_ROCK
+  Vermilion City Gym Badge: ESCAPE_ROPE
+  Vermilion City Lost Item: METAL_COAT
+  Victory Road Earthquake TM: TM_SLUDGE_BOMB
+  Victory Road Full Heal: CARBOS
+  Victory Road Full Restore: ETHER
+  Victory Road HP Up: TM_DREAM_EATER
+  Victory Road Max Revive: ELIXER
+  Violet City Gym Badge: TM_NIGHTMARE
+  Violet City Rare Candy: TM_TOXIC
+  Viridian City Gym Badge: COIN_CASE
+  Whirl Islands B2 Full Restore: MYSTIC_WATER
+  Whirl Islands B2 Max Elixer: MAX_REVIVE
+  Whirl Islands Carbos: REPEL
+  Whirl Islands Escape Rope: FULL_RESTORE
+  Whirl Islands NE Ultra Ball: POTION
+  Whirl Islands Nugget: TM_PSYCHIC
+  Whirl Islands SW Ultra Ball: PP_UP
+  Whitney TM: TM_ICY_WIND
+Xtra Stuff: {}
+Xtra Upgrades: {}

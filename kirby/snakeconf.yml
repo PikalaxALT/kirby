@@ -12,7 +12,7 @@ item_rando_version: '7.1.19'
 outfile: 'randomized.ips'
 zx_preset: 'KeyItemRando'
 zx_seed: null
-item_preset: 'Extreme'
+item_preset: 'Maximum'
 item_seed: null
 
 ## Path parameters. Default values are given here.

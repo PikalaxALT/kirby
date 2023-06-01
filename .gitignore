@@ -3,10 +3,10 @@
 __pycache__
 *.pyc
 *.pyo
-resources/
-!resources/vanilla-rom
-!resources/Speedchoice-rom
-floating/
+kirby/resources/speedchoice-rom
+kirby/resources/item-rando
+kirby/resources/zxplus
+kirby/floating/
 *.zip
 Patches
 PatchScript

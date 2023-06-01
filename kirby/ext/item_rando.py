@@ -9,7 +9,7 @@ import traceback
 import subprocess
 import platform
 import yaml
-from typing import NoReturn, overload
+from typing import overload
 from discord import app_commands
 from discord.ext import commands
 from ..discord_bot import DiscordBot

@@ -4,6 +4,13 @@ A Discord bot to generate patch files that, when applied to a vanilla copy of Po
 
 ## Setup
 
+### Windows
+
+You will need:
+- MSYS2 on the path, this also puts the wget utility on the path. The following packages from pacman are also required:
+  - rsync
+- [unzip.exe](http://stahlworks.com/tool-zipunzip), the command-line interface for ZIP.
+
 ### Ubuntu
 
 Add the [deadsnakes ppa](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa) package repositories, then install `gcc openjdk-17-jre-headless libgtk-3-dev unzip python3.11-dev python3.11-venv`
@@ -14,6 +21,7 @@ Create a Python virtual environment with the packages `snakemake python-dotenv d
 
 You will need to provide the following resources:
 
+- Java JRE-17 or newer
 - Python 3.11 or newer (may also work on Python 3.10)
 - Discord bot token, required for the bot to login to discord
 - Optional: Docker, to build the base ROMs (Windows and WSL: install Docker Desktop and use WSL v2)
@@ -29,7 +37,7 @@ You can also manually download the following resources:
 
 ## Standalone randomizer invocation:
 
-Create an IPS patch against vanilla crystal by running `snakemake -f kirby/Snakefile --config outfile=path/to/save/patch.ips`.
+Create an IPS patch against vanilla crystal by running `snakemake -c1 -d kirby --snakefile kirby/Snakefile -C outfile=path/to/save/patch.ips`.
 
 ## Connecting the bot to Discord
 
