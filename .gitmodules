@@ -1,3 +1,3 @@
-[submodule "resources/vanilla-rom"]
-	path = resources/vanilla-rom
+[submodule "kirby/resources/vanilla-rom"]
+	path = kirby/resources/vanilla-rom
 	url = https://github.com/pret/pokecrystal
