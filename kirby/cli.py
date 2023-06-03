@@ -77,7 +77,8 @@ class CLI(argparse.Namespace):
                 epilog='Parameter resolution order:\n'
                        '  1. Arguments passed via this interface will take top priority\n'
                        '  2. If --dotenv is passed, any arguments not defined in 1. will be taken from the dotenv file\n'
-                       '  3. Otherwise, the same variables defined in the runtime environment will be used'
+                       '  3. Otherwise, the same variables defined in the runtime environment will be used\n'
+                       '  4. The final fallback value for path-like arguments is what is set in snakeconf.yml.'
             )
             parser.add_argument(
                 '--token',
@@ -98,7 +99,7 @@ class CLI(argparse.Namespace):
                 help='Path to a vanilla copy of Pokemon Crystal (U)(1.1) (.env: KIRBY_VANILLA_ROM)',
                 default=pathlib.Path(os.getenv(
                     'KIRBY_VANILLA_ROM',
-                    'resources/vanilla-rom/pokecrystal11.gbc'
+                    CLI.vanilla_rom
                 )).resolve()
             )
             parser.add_argument(
@@ -108,7 +109,7 @@ class CLI(argparse.Namespace):
                 help='Path to a copy of Pokemon Crystal Speedchoice V7 Shopsanity (.env: KIRBY_SPEEDCHOICE_ROM)',
                 default=pathlib.Path(os.getenv(
                     'KIRBY_SPEEDCHOICE_ROM',
-                    'resources/speedchoice-rom/crystal-speedchoice.gbc'
+                    CLI.speedchoice_rom
                 )).resolve()
             )
             parser.add_argument(
@@ -118,17 +119,17 @@ class CLI(argparse.Namespace):
                 help='Path to the Universal Pokemon Randomizer ZX JAR (.env: KIRBY_UPR_ZX_JAR)',
                 default=pathlib.Path(os.getenv(
                     'KIRBY_UPR_ZX_JAR',
-                    'resources/zxplus/universal-pokemon-randomizer-zx.jar'
+                    CLI.upr_zx_jar_path
                 )).resolve()
             )
             parser.add_argument(
                 '--upr-zx-settings',
-                dest='upr_zx_path',
+                dest='upr_zx_settings_path',
                 type=pathlib.Path,
                 help='Path to the Universal Pokemon Randomizer ZX settings folder (.env: KIRBY_UPR_ZX_SETTINGS)',
                 default=pathlib.Path(os.getenv(
                     'KIRBY_UPR_ZX_SETTINGS',
-                    'resources/zxplus/settings'
+                    CLI.upr_zx_settings_path
                 ))
             )
             parser.add_argument(
@@ -138,7 +139,7 @@ class CLI(argparse.Namespace):
                 help='Path to the folder containing the item randomizer CLI and modes (.env: KIRBY_ITEM_RANDO_PATH)',
                 default=pathlib.Path(os.getenv(
                     'KIRBY_ITEM_RANDO_PATH',
-                    'resources/item-rando'
+                    CLI.item_rando_path
                 )).resolve()
             )
             parser.add_argument(
@@ -148,7 +149,7 @@ class CLI(argparse.Namespace):
                 help='Path to the Floating IPS binary (.env: KIRBY_FLOATING_IPS)',
                 default=pathlib.Path(os.getenv(
                     'KIRBY_FLOATING_IPS',
-                    'floating/flips' + ('.exe' if platform.system() == 'Windows' else '-linux')
+                    CLI.flips_path
                 )).resolve()
             )
 

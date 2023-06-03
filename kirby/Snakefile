@@ -10,6 +10,11 @@ import shutil
 
 configfile: 'snakeconf.yml'
 
+_user_defined_params = {'outfile', 'zx_preset', 'item_preset'}
+_missing_params = _user_defined_params - {key for key, value in config.items() if value}
+if _missing_params:
+    raise KeyError(', '.join(_missing_params))
+
 is_windows = platform.system() == 'Windows'
 
 _exe_extension = '.exe' if is_windows else ''
@@ -24,6 +29,13 @@ _speedchoice_version = config['speedchoice_version']
 _speedchoice_version_no_dots = _speedchoice_version.replace('.', '')
 _zxplus_version = config['zxplus_version']
 _item_rando_version = config['item_rando_version']
+
+_zxplus_settings_path = pathlib.Path(config['zxplus_settings']).resolve()
+if not (_zxplus_settings_path / (config['zx_preset'] + '.rnqs')).exists():
+    raise FileNotFoundError(_zxplus_settings_path / (config['zx_preset'] + '.rnqs'))
+
+if not (_item_rando_dir / 'Modes' / (config['item_preset'] + '.yml')).exists():
+    raise FileNotFoundError(_item_rando_dir / 'Modes' / (config['item_preset'] + '.yml'))
 
 config['outfile'] = pathlib.Path(config['outfile']).resolve()
 os.makedirs(config['outfile'].parent, exist_ok=True)
@@ -71,6 +83,8 @@ rule install_item_rando:
         '&& rm -rf "{params.zip_dir}"'
 
 rule build_baserom:
+    input:
+        pathlib.Path(config['vanilla_rom']).parent / 'Makefile'
     output:
         config['vanilla_rom'],
     params:

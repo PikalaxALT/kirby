@@ -10,10 +10,10 @@ item_rando_version: '7.1.19'
 
 ## Parameters set by the bot command. Suggested defaults are given here.
 outfile: 'randomized.ips'
-zx_preset: 'KeyItemRando'
-zx_seed: null
-item_preset: 'Maximum'
-item_seed: null
+zx_preset:
+zx_seed:
+item_preset:
+item_seed:
 
 ## Path parameters. Default values are given here.
 # If the vanilla ROM does not exist, Docker Desktop is required.

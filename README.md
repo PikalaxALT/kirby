@@ -72,6 +72,7 @@ Parameter resolution order:
   1. Arguments passed via this interface will take top priority
   2. If --dotenv is passed, any arguments not defined in 1. will be taken from the dotenv file
   3. Otherwise, the same variables defined in the runtime environment will be used
+  4. The final fallback value for path-like arguments is what is set in snakeconf.yml.
 ```
 
 ## Updating Speedchoice, ZXPlus, or the Item Randomizer
