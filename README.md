@@ -17,7 +17,7 @@ Add the [deadsnakes ppa](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa) 
 
 ### Common
 
-Create a Python virtual environment with the packages `snakemake python-dotenv discord.py`
+Create a Python virtual environment with the packages `snakemake python-dotenv discord.py pyyaml`. `wheel` is also required, to install `snakemake`.
 
 You will need to provide the following resources:
 
@@ -26,7 +26,9 @@ You will need to provide the following resources:
 - Discord bot token, required for the bot to login to discord
 - Optional: Docker, to build the base ROMs (Windows and WSL: install Docker Desktop and use WSL v2)
 
-Install additional resources by running `snakemake -c$(nproc) resources`.
+Install additional resources by running `snakemake --snakefile kirby/Snakefile -d kirby -c$(nproc) resources`. You should do this at least once before starting up the bot for the first time.
+
+You will need to manually install settings files for the UPR-ZX into `kirby/resources
 
 You can also manually download the following resources:
 - Vanilla copy of Pokemon Crystal (U)(1.1) ([disassembly](/pret/pokecrystal))
