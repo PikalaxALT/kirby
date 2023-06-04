@@ -168,6 +168,7 @@ class ItemRando(commands.GroupCog):
                 proc = await asyncio.create_subprocess_exec(
                     'snakemake', 
                     '-c', '1',
+                    '-R', 'create_patchfile',
                     '--configfile', conffile.name,
                     cwd=__module_dir__,
                     stdout=subprocess.PIPE,

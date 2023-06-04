@@ -28,24 +28,10 @@ _item_rando_version = config['item_rando_version']
 config['outfile'] = pathlib.Path(config['outfile']).resolve()
 os.makedirs(config['outfile'].parent, exist_ok=True)
 
-if 'tempdir' not in config:
-    config['tempdir'] = pathlib.Path(tempfile.mkdtemp())
-else:
-    config['tempdir'] = pathlib.Path(config['tempdir']).resolve()
-os.makedirs(config['tempdir'], exist_ok=True)
-
 
 rule all:
     input:
         config['outfile'],
-
-rule resources:
-    input:
-        config['vanilla_rom'],
-        config['speedchoice_rom'],
-        config['zxplus_jar'],
-        config['item_rando']['Windows' if is_windows else None],
-        config['flips']['Windows' if is_windows else None],
 
 rule install_zx:
     output:
@@ -53,7 +39,7 @@ rule install_zx:
     params:
         version=_zxplus_version,
     shell:
-        'wget -O {output} https://github.com/choatix/zxplus/releases/download/v{params.version}/universal-pokemon-randomizer-zx.jar'
+        'wget -O {output} -q -nc https://github.com/choatix/zxplus/releases/download/v{params.version}/universal-pokemon-randomizer-zx.jar'
 
 rule install_item_rando:
     params:
@@ -66,9 +52,9 @@ rule install_item_rando:
         _item_rando_cli,
     shell:
         'wget -q -nc https://github.com/choatix/Pokemon-Crystal-Item-Randomizer/releases/download/v{params.version}/{params.zip_name}.zip ' \
-        '&& unzip -oqq {params.zip_name}.zip '
-        '&& rsync -dLr "{params.zip_dir}"/* {params.rando_dir} ' \
-        '&& rm -rf "{params.zip_dir}"'
+        '&& unzip -oqq "{params.zip_name}.zip" && ' \
+        'cp -r "{params.zip_dir}"/* "{params.rando_dir}" && ' \
+        'rm -rf "{params.zip_dir}" "{params.zip_name}.zip"'
 
 rule build_baserom:
     input:
@@ -77,21 +63,23 @@ rule build_baserom:
         config['vanilla_rom'],
     params:
         bind_dir = pathlib.Path(config['vanilla_rom']).parent.resolve()
+    threads:
+        64
     shell:
-        'docker run -v "{params.bind_dir}":/rom -w /rom kemenaran/rgbds:0.6.0 make -j {threads} crystal11'
+        'docker run --rm -v "{params.bind_dir}":/rom -w /rom kemenaran/rgbds:0.6.0 make -j {threads} crystal11'
 
 rule download_flips:
     output:
         _flips,
     shell:
         'wget -q -nc https://dl.smwcentral.net/11474/floating.zip ' \
-        '&& unzip -qqo floating.zip -d floating ' \
-        '&& rm floating.zip'
+        '&& unzip -qqo floating.zip -d floating && ' \
+        'rm -f floating.zip'
 
 rule download_speedchoice:
     input:
-        baserom=config['vanilla_rom'],
-        flips=_flips,
+        baserom=rules.build_baserom.output,
+        flips=rules.download_flips.output,
     output:
         config['speedchoice_rom'],
     params:
@@ -103,37 +91,45 @@ rule download_speedchoice:
         '&& "{input.flips}" -a Speedchoice/Patches/VTo{params.version_nodots}.ips "{input.baserom}" "{output}" ' \
         '&& rm -rf Speedchoice Speedchoice.zip'
 
+rule resources:
+    input:
+        rules.build_baserom.output,
+        rules.download_speedchoice.output,
+        rules.install_zx.output,
+        rules.install_item_rando.output,
+        rules.download_flips.output,
+
 rule invoke_zx:
     input:
-        baserom=ancient(config['speedchoice_rom']),
-        jar=config['zxplus_jar'],
-        settings=expand('{settings}/{preset}.rnqs', settings=config['zxplus_settings'], preset=config['zx_preset']),
+        baserom=rules.download_speedchoice.output,
+        jar=rules.install_zx.output,
+        settings=pathlib.Path(config['zxplus_settings']).resolve() / (config['zx_preset'] + '.rnqs'),
     params:
         seed=expand('{zx_seed}', zx_seed=config['zx_seed']),
     output:
-        zxrom=temporary(config['tempdir'] / 'step1.gbc'),
+        temp(expand('{outs}', outs=pathlib.Path('step1.gbc').resolve())),
     shell:
-        'java -Xmx768M -jar {input.jar} cli -i "{input.baserom}" -o "{output.zxrom}" -s "{input.settings}"'
+        'java -Xmx768M -jar {input.jar} cli -i "{input.baserom}" -o "{output}" -s "{input.settings}"'
 
 rule invoke_itemrando:
     input:
-        zxrom=config['tempdir'] / 'step1.gbc',
-        cli=_item_rando_cli,
-        settings=expand(_item_rando_cli.parent / 'Modes' / '{item_preset}.yml', item_preset=config['item_preset']),
+        zxrom=rules.invoke_zx.output,
+        cli=rules.install_item_rando.output,
+        settings=_item_rando_cli.parent / 'Modes' / (config['item_preset'] + '.yml'),
     output:
-        temporary(config['tempdir'] / 'step2.gbc'),
+        temp(expand('{outs}', outs=pathlib.Path('step2.gbc').resolve())),
     params:
         seed=expand('{item_seed}', item_seed=config['item_seed']),
         cli_parent=_item_rando_dir,
-        cli_name=_item_rando_cli.name,
+
     shell:
-        'cd {params.cli_parent} && "{params.cli_name}" cli -i "{input.zxrom}" -o "{output}" -m "{input.settings}"' + (' -s {params.seed}' if config['item_seed'] else '')
+        'cd {params.cli_parent} && "{input.cli}" cli -i "{input.zxrom}" -o "{output}" -m "{input.settings}"' + (' -s {params.seed}' if config['item_seed'] else '')
 
 rule create_patchfile:
     input:
-        randorom=config['tempdir'] / 'step2.gbc',
-        baserom=config['vanilla_rom'],
-        flips=config['flips']['Windows' if is_windows else None],
+        randorom=rules.invoke_itemrando.output,
+        baserom=rules.build_baserom.output,
+        flips=rules.download_flips.output,
     output:
         config['outfile'],
     shell:
