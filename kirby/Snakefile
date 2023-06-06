@@ -105,11 +105,12 @@ rule invoke_zx:
         jar=rules.install_zx.output,
         settings=pathlib.Path(config['zxplus_settings']).resolve() / (config['zx_preset'] + '.rnqs'),
     params:
-        seed=expand('{zx_seed}', zx_seed=config['zx_seed']),
+        #seed=expand('{zx_seed}', zx_seed=config['zx_seed']),
+        seed_arg=expand('# TODO: zxplus cli to support custom seed', seed=config['zx_seed']) if config['zx_seed'] else '',
     output:
         temp(expand('{outs}', outs=pathlib.Path('step1.gbc').resolve())),
     shell:
-        'java -Xmx768M -jar {input.jar} cli -i "{input.baserom}" -o "{output}" -s "{input.settings}"'
+        'java -Xmx768M -jar {input.jar} cli -i "{input.baserom}" -o "{output}" -s "{input.settings}" {params.seed_arg}'
 
 rule invoke_itemrando:
     input:
@@ -119,11 +120,11 @@ rule invoke_itemrando:
     output:
         temp(expand('{outs}', outs=pathlib.Path('step2.gbc').resolve())),
     params:
-        seed=expand('{item_seed}', item_seed=config['item_seed']),
+        seed_arg=expand('-s {seed}', seed=config['item_seed']) if config['item_seed'] else '',
         cli_parent=_item_rando_dir,
 
     shell:
-        'cd {params.cli_parent} && "{input.cli}" cli -i "{input.zxrom}" -o "{output}" -m "{input.settings}"' + (' -s {params.seed}' if config['item_seed'] else '')
+        'cd {params.cli_parent} && "{input.cli}" cli -i "{input.zxrom}" -o "{output}" -m "{input.settings}" {params.seed_arg}'
 
 rule create_patchfile:
     input:
