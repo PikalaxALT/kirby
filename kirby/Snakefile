@@ -105,7 +105,6 @@ rule invoke_zx:
         jar=rules.install_zx.output,
         settings=pathlib.Path(config['zxplus_settings']).resolve() / (config['zx_preset'] + '.rnqs'),
     params:
-        #seed=expand('{zx_seed}', zx_seed=config['zx_seed']),
         seed_arg=expand('# TODO: zxplus cli to support custom seed', seed=config['zx_seed']) if config['zx_seed'] else '',
     output:
         temp(expand('{outs}', outs=pathlib.Path('step1.gbc').resolve())),
