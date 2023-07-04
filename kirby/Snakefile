@@ -85,11 +85,16 @@ rule download_speedchoice:
     params:
         version=_speedchoice_version,
         version_nodots=_speedchoice_version_no_dots,
-    shell:
-        'wget -q -nc https://github.com/choatix/pokecrystal-speedchoice/releases/download/v{params.version}/Speedchoice.zip ' \
-        '&& unzip -qqo Speedchoice.zip -d Speedchoice ' \
-        '&& "{input.flips}" -a Speedchoice/Patches/VTo{params.version_nodots}.ips "{input.baserom}" "{output}" ' \
-        '&& rm -rf Speedchoice Speedchoice.zip'
+    run:
+        if tuple(int(x) for x in params.version.split('.')) < (8,):
+            shell('wget -q -nc https://github.com/choatix/pokecrystal-speedchoice/releases/download/v{params.version}/Speedchoice.zip '
+                  '&& unzip -qqo Speedchoice.zip -d Speedchoice '
+                  '&& "{input.flips}" -a Speedchoice/Patches/VTo{params.version_nodots}.ips "{input.baserom}" "{output}" '
+                  '&& rm -rf Speedchoice Speedchoice.zip')
+        else:
+            shell('wget -q -nc https://github.com/choatix/pokecrystal-speedchoice/releases/download/v{params.version}/VTo{params.version_nodots}.ips '
+                  '&& "{input.flips}" -a VTo{params.version_nodots}.ips "{input.baserom}" "{output}" '
+                  '&& rm -f VTo{params.version_nodots}.ips')
 
 rule resources:
     input:
