@@ -56,9 +56,17 @@ rule install_item_rando:
         'cp -r "{params.zip_dir}"/* "{params.rando_dir}" && ' \
         'rm -rf "{params.zip_dir}" "{params.zip_name}.zip"'
 
+rule clone_baserom:
+    output:
+        pathlib.Path(config['vanilla_rom']).parent / 'Makefile'
+    params:
+        dest_dir = pathlib.Path(config['vanilla_rom']).parent.resolve()
+    shell:
+        'git clone --recursive https://github.com/pret/pokecrystal.git {params.dest_dir}'
+
 rule build_baserom:
     input:
-        pathlib.Path(config['vanilla_rom']).parent / 'Makefile'
+        rules.clone_baserom.output,
     output:
         config['vanilla_rom'],
     params:

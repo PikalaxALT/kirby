@@ -6,8 +6,8 @@ import platform
 import textwrap
 import yaml
 
-from .util.traceback_limit import traceback_limit
-from . import __module_dir__
+from kirby import __module_dir__
+from kirby.util.traceback_limit import traceback_limit
 
 
 def wrap_paragraphs(text: str, width: int, indent: str):
@@ -52,6 +52,8 @@ class CLI(argparse.Namespace):
     upr_zx_settings_path: pathlib.Path | None = pathlib.Path(snakemake_config['zxplus_settings']).resolve()
     item_rando_path: pathlib.Path | None = pathlib.Path(snakemake_config['item_rando']['Windows' if platform.system() == 'Windows' else None]).resolve()
     flips_path: pathlib.Path | None = pathlib.Path(snakemake_config['flips']['Windows' if platform.system() == 'Windows' else None]).resolve()
+    webapp_host: str = 'localhost'
+    webapp_port: int = 5000
 
     def __init__(self, args=None):
         with traceback_limit(0):
@@ -68,7 +70,7 @@ class CLI(argparse.Namespace):
             )
 
             _, args = parser_dotenv.parse_known_args(args, self)
-            
+
             parser = argparse.ArgumentParser(
                 prog='python -m kirby',
                 formatter_class=MyHelpFormatter,
@@ -151,6 +153,24 @@ class CLI(argparse.Namespace):
                     'KIRBY_FLOATING_IPS',
                     CLI.flips_path
                 )).resolve()
+            )
+            parser.add_argument(
+                '--webapp-host',
+                dest='webapp_host',
+                help='Address from which to host the web app (def. localhost)',
+                default=os.getenv(
+                    'KIRBY_WEBAPP_HOST',
+                    'localhost'
+                )
+            )
+            parser.add_argument(
+                '--webapp-port',
+                dest='webapp_port',
+                help='Port over which to host the web app (def. 5000)',
+                default=int(os.getenv(
+                    'KIRBY_WEBAPP_PORT',
+                    '5000'
+                ))
             )
 
             parser.parse_args(args, self)
