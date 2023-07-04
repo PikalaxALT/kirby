@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<title>Full Item Randomizer</title>
+<p>Use the form below to select the settings for both steps in the randomization process.<br><br>
+<b>Step 1:</b> Universal Pokemon Randomizer ZX (shuffles the wild and trainer Pokemon)<br>
+<b>Step 2:</b> Key Item Randomizer (shuffles the items)</p>
+<form class="ui-form" method="post" action="{{ url_for('generate_route') }}">
+    <div class="field">
+        <span>Preset for Pokemon randomization</span>
+        <select name="zx_preset" id="zx_preset">
+            {% for item in zx_presets %}
+            <option value="{{item}}">{{item}}</option>
+            {% endfor %}
+        </select><br>
+        <span>Preset for item randomization</span>
+        <select name="item_preset" id="item_preset">
+            {% for item in item_presets %}
+            <option value="{{item}}">{{item}}</option>
+            {% endfor %}
+        </select><br>
+        Seed for Pokemon randomization: <input type="text" name="zx_seed" id="zx_seed" placeholder="(optional)"><br>
+        Seed for item randomization: <input type="text" name="item_seed" id="item_seed" placeholder="(optional)"><br>
+        <button type="submit" value="Generate">Generate</button>
+    </div>
+</form>

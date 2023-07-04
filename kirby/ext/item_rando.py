@@ -6,13 +6,11 @@ import contextlib
 import discord
 import traceback
 import subprocess
-from typing import overload
 from discord import app_commands
 from discord.ext import commands
 from kirby import __module_dir__
 from kirby.discord_bot import DiscordBot
 from kirby.util.traceback_limit import traceback_limit
-from kirby.util.item_rando_caller import ItemRandoCaller
 
 
 @contextlib.contextmanager
@@ -66,7 +64,7 @@ class RandoParamsView(discord.ui.View):
         with traceback_limit(3):
             outfname = tempfile.mktemp(suffix='.ips')
             try:
-                await self.cog.randomize_rom(
+                await self.cog.rando(
                     zx_preset=self.monster_preset.values[0],
                     zx_seed=self.monster_seed,
                     item_preset=self.item_preset.values[0],
@@ -119,16 +117,16 @@ class RandoParamsView(discord.ui.View):
         self.selected_item_preset: str = None
         self.monster_seed: str = None
         self.item_seed: str = None
-        for config in self.bot.upr_settings_files:
+        for config in self.cog.rando.upr_settings_files:
             self.monster_preset.add_option(label=config.stem)
-        for preset in self.bot.item_rando_presets:
+        for preset in self.cog.rando.item_rando_presets:
             self.item_preset.add_option(label=preset.stem)
 
 
 class ItemRando(commands.GroupCog):
     def __init__(self, bot: DiscordBot):
         self.bot = bot
-        self.randomize_rom = ItemRandoCaller(bot.cl_args)
+        self.rando = bot.rando
 
     @app_commands.command()
     async def generate(self, interaction: discord.Interaction[DiscordBot]):

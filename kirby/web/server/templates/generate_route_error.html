@@ -1,0 +1,20 @@
+<!doctype html>
+<title>Full Item Randomizer</title>
+<h1>Error generating the ROM</h1>
+{% if subprocess_error %}
+<p>
+    <h2>subprocess.CalledProcessError</h2>
+    <h3>stdout</h3>
+    <font style="font-family:'Courier New', Courier, monospace">{{e.stdout|safe}}</font>
+    <h3>stderr</h3>
+    <font style="font-family:'Courier New', Courier, monospace">{{e.stderr|safe}}</font>
+</p>
+{% else %}
+<p>
+    <h2>{{e.__class__.__name__}}</h2>
+    {{e}}
+</p>
+{% endif %}
+<form>
+    <input type="button" value="Back" onclick="history.back()">
+</form>

@@ -6,9 +6,48 @@ import subprocess
 import os
 import pathlib
 import shlex
-from typing import overload
+from typing import overload, TypeVar
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEvent, FileSystemEventHandler
+from watchdog.events import EVENT_TYPE_CREATED, EVENT_TYPE_DELETED, EVENT_TYPE_MOVED
 from kirby.cli import CLI
 from kirby import __module_dir__
+
+_T = TypeVar('_T')
+
+
+class Watchdog(FileSystemEventHandler):
+    def __init__(self, queue: asyncio.Queue[FileSystemEvent], loop: asyncio.BaseEventLoop, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._queue = queue
+        self._loop = loop
+
+    def on_any_event(self, event: FileSystemEvent):
+        self._loop.call_soon_threadsafe(self._queue.put_nowait, event)
+    
+    def cancel(self):
+        self._loop.call_soon_threadsafe(self._queue.put_nowait, None)
+
+
+class EventIterator(object):
+    def __init__(self, queue: asyncio.Queue[FileSystemEvent],
+                 loop: asyncio.BaseEventLoop | None = None):
+        self.queue = queue
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        item = await self.queue.get()
+
+        if item is None:
+            raise StopAsyncIteration
+
+        return item
+
+
+def is_settings_file(child: pathlib.Path, parent: pathlib.Path, ext: str):
+    return child.is_relative_to(parent) and child.suffix == ext
 
 
 # Tell the YAML dumper how to handle objects of type pathlib.Path
@@ -36,6 +75,57 @@ class ItemRandoCaller:
             'flips': {system: cl_args.flips_path},
             'item_rando': {system: cl_args.item_rando_path},
         }
+        self.settings_file_specs = (
+            (self.cl_args.upr_zx_settings_path, '.rnqs'),
+            (self.cl_args.item_rando_path.parent / 'Modes', '.yml'),
+        )
+
+        # Prepopulate choices
+        self.settings_files = {
+            parent: set(parent.glob(f'*{ext}'))
+            for parent, ext in self.settings_file_specs
+        }
+        self._path_queue: asyncio.Queue[FileSystemEvent] = asyncio.Queue()
+
+    @property
+    def upr_settings_files(self):
+        return self.settings_files[self.cl_args.upr_zx_settings_path]
+
+    @property
+    def item_rando_presets(self):
+        return self.settings_files[self.cl_args.item_rando_path.parent / 'Modes']
+
+    def watch(self):
+        handler = Watchdog(self._path_queue, self.loop)
+        observer = Observer()
+        observer.schedule(handler, self.cl_args.upr_zx_settings_path, recursive=False)
+        observer.schedule(handler, self.cl_args.item_rando_path / 'Modes', recursive=False)
+        try:
+            observer.join()
+        finally:
+            handler.cancel()
+
+    def handle_file_create(self, path_s: str):
+        path = pathlib.Path(path_s)
+        self.settings_files[path.parent].add(path)
+
+    def handle_file_delete(self, path_s: str):
+        path = pathlib.Path(path_s)
+        self.settings_files[path.parent].discard(path)
+
+    async def sync_presets(self):
+        fut = asyncio.create_task(asyncio.to_thread(self.watch))
+        try:
+            async for event in EventIterator(self._path_queue):
+                if event.event_type == EVENT_TYPE_MOVED:
+                    self.handle_file_delete(event.src_path)
+                    self.handle_file_create(event.dest_path)
+                elif event.event_type == EVENT_TYPE_CREATED:
+                    self.handle_file_create(event.src_path)
+                elif event.event_type == EVENT_TYPE_DELETED:
+                    self.handle_file_delete(event.src_path)
+        finally:
+            fut.cancel()
 
     @overload
     async def __call__(
@@ -49,6 +139,9 @@ class ItemRandoCaller:
     ) -> asyncio.subprocess.Process: ...
 
     async def __call__(self, **config) -> asyncio.subprocess.Process:
+        config = self.config | config
+        config['zx_seed'] = config['zx_seed'] or None
+        config['item_seed'] = config['item_seed'] or None
         with tempfile.NamedTemporaryFile(suffix='.yml', mode='w+', delete=False) as conffile:
             yaml.safe_dump(self.config | config, conffile)
         try:

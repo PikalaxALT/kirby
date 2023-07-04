@@ -115,7 +115,7 @@ rule invoke_zx:
     params:
         seed_arg=expand('# TODO: zxplus cli to support custom seed', seed=config['zx_seed']) if config['zx_seed'] else '',
     output:
-        temp(expand('{outs}', outs=pathlib.Path('step1.gbc').resolve())),
+        temp(expand('{outs}', outs=tempfile.mktemp(suffix='.gbc'))),
     shell:
         'java -Xmx768M -jar {input.jar} cli -i "{input.baserom}" -o "{output}" -s "{input.settings}" {params.seed_arg}'
 
@@ -125,7 +125,7 @@ rule invoke_itemrando:
         cli=rules.install_item_rando.output,
         settings=_item_rando_cli.parent / 'Modes' / (config['item_preset'] + '.yml'),
     output:
-        temp(expand('{outs}', outs=pathlib.Path('step2.gbc').resolve())),
+        temp(expand('{outs}', outs=tempfile.mktemp(suffix='.gbc'))),
     params:
         seed_arg=expand('-s {seed}', seed=config['item_seed']) if config['item_seed'] else '',
         cli_parent=_item_rando_dir,
