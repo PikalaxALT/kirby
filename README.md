@@ -31,11 +31,11 @@ Install additional resources by running `snakemake --snakefile kirby/Snakefile -
 You will need to manually install settings files for the UPR-ZX into `kirby/resources
 
 You can also manually download the following resources:
-- Vanilla copy of Pokemon Crystal (U)(1.1) ([disassembly](/pret/pokecrystal))
+- Vanilla copy of Pokemon Crystal (U)(1.1) ([disassembly](https://github.com/pret/pokecrystal))
 - [Floating IPS](https://www.smwcentral.net/?p=section&a=details&id=11474) (to apply the speedchoice patch and create rando patches)
-- Unmodified copy of [Pokemon Crystal Speedchoice v7.4.13 or later](/choatix/pokecrystal-speedchoice/releases/tag/latest)
-- [Universal Pokemon Randomizer ZX v0.1.2.1 or later](/choatix/zxplus/releases/tag/latest)
-- [Pokemon Crystal Item Randomizer v7.1.19 or later](/choatix/Pokemon-Crystal-Item-Randomizer/releases/tag/latest)
+- Unmodified copy of [Pokemon Crystal Speedchoice v7.4.13 or later](https://github.com/choatix/pokecrystal-speedchoice/releases)
+- [Universal Pokemon Randomizer ZX v0.1.2.1 or later](https://github.com/choatix/zxplus/releases)
+- [Pokemon Crystal Item Randomizer v7.1.19 or later](https://github.com/choatix/Pokemon-Crystal-Item-Randomizer/releases)
 
 ## Standalone randomizer invocation:
 

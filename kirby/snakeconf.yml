@@ -4,9 +4,9 @@
 
 ## Version info. Update these to match new releases.
 # If you update these, run `snakemake -c1 -F resources` to download the new versions.
-speedchoice_version: '7.4.13'
-zxplus_version: '0.1.2.2'
-item_rando_version: '7.1.19'
+speedchoice_version: '8'
+zxplus_version: '1'
+item_rando_version: '8'
 
 ## Parameters set by the bot command. Suggested defaults are given here.
 outfile: 'randomized.ips'
