@@ -1,9 +1,53 @@
 <!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <style type="text/css">
+        div {
+            padding: 5px 10px;
+        }
+        html * {
+            font-family: Arial, Helvetica, sans-serif
+        }
+    </style>    
+</head>
+
 <title>Full Item Randomizer</title>
+<h1>Full Item Randomizer Seed Generator</h1>
+
+<script type="text/javascript">
+$("document").ready(function() {
+    $("#generate_button").on("click", function() {
+        $("#generate_button").prop('disabled', true);
+        $("#generate_button").text('Generating...');
+        var form = $("#ui_form");
+        $.ajax({
+            type: "POST",
+            url: "{{ url_for('generate_route') }}",
+            data: form.serialize(),
+            success: function(data) {
+                let blob = new Blob([data], {type: "application/x-ipscript"});
+                var a = document.createElement('a');
+                var now = new Date();
+                var timestamp = now.getTime();
+                document.body.appendChild(a);
+                a.href = window.URL.createObjectURL(blob);
+                a.download = "rando-patch-" + timestamp + ".ips";
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(a.href);
+                $("#generate_button").prop('disabled', false);
+                $("#generate_button").text('Generate');
+            },
+        });
+    });
+});
+</script>
+
 <p>Use the form below to select the settings for both steps in the randomization process.<br><br>
 <b>Step 1:</b> Universal Pokemon Randomizer ZX (shuffles the wild and trainer Pokemon)<br>
-<b>Step 2:</b> Key Item Randomizer (shuffles the items)</p>
-<form class="ui-form" method="post" action="{{ url_for('generate_route') }}">
+<b>Step 2:</b> Key Item Randomizer (shuffles the items)<br><br>
+<b><font style="color:red">WARNING:</font></b> Do NOT enter any private or personally-identifying details in this form.</p>
+<form class="ui-form" id="ui_form" method="post" action="{{ url_for('generate_route') }}">
     <div class="field">
         <span>Preset for Pokemon randomization</span>
         <select name="zx_preset" id="zx_preset">
@@ -19,6 +63,6 @@
         </select><br>
         Seed for Pokemon randomization: <input type="text" name="zx_seed" id="zx_seed" placeholder="(optional)"><br>
         Seed for item randomization: <input type="text" name="item_seed" id="item_seed" placeholder="(optional)"><br>
-        <button type="submit" value="Generate">Generate</button>
+        <button id="generate_button" type="submit" value="Generate">Generate</button>
     </div>
 </form>

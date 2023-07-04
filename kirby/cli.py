@@ -157,7 +157,7 @@ class CLI(argparse.Namespace):
             parser.add_argument(
                 '--webapp-host',
                 dest='webapp_host',
-                help='Address from which to host the web app (def. localhost)',
+                help='Address from which to host the web app (.env: KIRBY_WEBAPP_HOST)',
                 default=os.getenv(
                     'KIRBY_WEBAPP_HOST',
                     'localhost'
@@ -166,7 +166,7 @@ class CLI(argparse.Namespace):
             parser.add_argument(
                 '--webapp-port',
                 dest='webapp_port',
-                help='Port over which to host the web app (def. 5000)',
+                help='Port over which to host the web app (.env: KIRBY_WEBAPP_PORT)',
                 default=int(os.getenv(
                     'KIRBY_WEBAPP_PORT',
                     '5000'

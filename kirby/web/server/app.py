@@ -2,7 +2,7 @@ import os
 import tempfile
 import datetime
 import subprocess
-from quart import Quart, send_file, render_template, request, flash
+from quart import Quart, send_file, render_template, request, redirect, url_for
 from kirby import __module_dir__
 from kirby.util.item_rando_caller import ItemRandoCaller
 from kirby.cli import CLI
@@ -34,11 +34,10 @@ def make_app(args: CLI, rando: ItemRandoCaller):
     @app.route('/', ['POST'])
     async def generate_route():
         form = await request.form
-        print(form)
         outfname = tempfile.mktemp(suffix='.ips')
         try:
             await rando(outfile=outfname, **form)
-            return await send_file(outfname, as_attachment=True, attachment_filename=f'rando-patch-{datetime.datetime.now().timestamp()}.ips')
+            return await send_file(outfname)
         except Exception as e:
             if (subprocess_error := isinstance(e, subprocess.CalledProcessError)):
                 e.stdout = escape(e.stdout)
