@@ -43,6 +43,8 @@ Create an IPS patch against vanilla crystal by running `snakemake -c1 -d kirby -
 
 ## Connecting the bot to Discord
 
+**IMPORTANT:** This bot requires the __message content__ intent. Make sure that is enabled for the bot application in the Discord developers portal.
+
 This bot only has a command-line interface. The usage message is reproduced below.
 
 ```bash
@@ -80,6 +82,14 @@ Parameter resolution order:
   3. Otherwise, the same variables defined in the runtime environment will be used
   4. The final fallback value for path-like arguments is what is set in snakeconf.yml.
 ```
+
+## Using the bot
+
+The main entrypoint from Discord is the command `/item-rando generate`. Use this command without any additional arguments. This will spawn a menu where you can choose your presets for UPR-ZX and Item Rando, as well as enter seeds for each's RNG. Once satisfied, click on the 'Generate!' button to generate the ROM. When finished, the ROM will be uploaded as an IPS patch, which you should apply to a vanilla copy of Pokemon Crystal (U)(1.1).
+
+### If the command does not work...
+
+... it means it has not yet been synced to Discord. The bot's owner must invoke the `!sync` command in any channel where the bot is allowed to speak. Note that if the bot is added to a guild while it is connected to Discord, the command will be available immediately.
 
 ## Updating Speedchoice, ZXPlus, or the Item Randomizer
 

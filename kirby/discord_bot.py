@@ -38,6 +38,9 @@ class DiscordBot(commands.Bot):
         await super().close()
         self.closed.set()
 
+    async def on_guild_join(self, guild: discord.Guild):
+        await self.tree.sync(guild=guild)
+
 
 # Commands to be added to the bot on initial startup
 class CoreCog(commands.Cog):
