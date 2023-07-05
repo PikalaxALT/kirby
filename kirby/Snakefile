@@ -10,24 +10,42 @@ import shutil
 
 configfile: 'snakeconf.yml'
 
-is_windows = platform.system() == 'Windows'
-
-_exe_extension = '.exe' if is_windows else ''
-_zip_name = f'ItemRando{"" if is_windows else "CLI-Linux"}'
-_zip_dir = 'Pokemon Crystal Item Randomizer' if is_windows else 'ItemRandoCLI-Linux'
-_flips = config['flips']['Windows' if is_windows else None]
-
-_item_rando_cli = pathlib.Path(config['item_rando']['Windows' if is_windows else None]).resolve()
-_item_rando_dir = _item_rando_cli.parent
-
 _speedchoice_version = config['speedchoice_version']
 _speedchoice_version_no_dots = _speedchoice_version.replace('.', '')
 _zxplus_version = config['zxplus_version']
 _item_rando_version = config['item_rando_version']
 
+_zxplus_version_tuple = tuple(int(x) for x in _zxplus_version.split('.'))
+_item_rando_version_tuple = tuple(int(x) for x in _item_rando_version.split('.'))
+_speedchoice_version_tuple = tuple(int(x) for x in _speedchoice_version.split('.'))
+
+is_windows = platform.system() == 'Windows'
+
+_exe_extension = '.exe' if is_windows else ''
+
+if is_windows:
+    if _item_rando_version_tuple >= (8,):
+        _zip_name = 'Pokemon.Crystal.Item.Randomizer'
+    else:
+        _zip_name = 'ItemRando'
+else:
+    if _item_rando_version_tuple >= (8,):
+        _zip_name = 'ItemRandoLinuxCLI'
+    else:
+        _zip_name = 'ItemRandoCLI-Linux'
+
+_zip_dir = 'Pokemon Crystal Item Randomizer' if is_windows else 'ItemRandoCLI-Linux'
+_flips = pathlib.Path(config['flips']['Windows' if is_windows else None]).resolve()
+
+_item_rando_cli = pathlib.Path(config['item_rando']['Windows' if is_windows else None]).resolve()
+_item_rando_dir = _item_rando_cli.parent
+
 config['outfile'] = pathlib.Path(config['outfile']).resolve()
 os.makedirs(config['outfile'].parent, exist_ok=True)
 
+_zxplus_settings_file = (pathlib.Path(config['zxplus_settings']) / config['zx_preset']).with_suffix('.rnqs').resolve()
+_item_rando_mode_file = (_item_rando_dir / 'Modes' / config['item_preset']).with_suffix('.yml').resolve()
+_vanilla_rom_file = pathlib.Path(config['vanilla_rom']).resolve()
 
 rule all:
     input:
@@ -41,15 +59,32 @@ rule install_zx:
     shell:
         'wget -O {output} -q -nc https://github.com/choatix/zxplus/releases/download/v{params.version}/universal-pokemon-randomizer-zx.jar'
 
+rule download_zx_settings:
+    output:
+        _zxplus_settings_file,
+    params:
+        version=_zxplus_version,
+        outdir=_zxplus_settings_file.parent,
+    run:
+        params.outdir.mkdir(parents=True, exist_ok=True)
+        if _zxplus_version_tuple >= (1,):
+            shell('wget -q -nc https://github.com/choatix/zxplus/releases/download/v{params.version}/ZXsettings.zip '
+                  '&& unzip -ooq "ZXsettings.zip" '
+                  '&& cp "ZXsettings"/* "{params.outdir}"/ '
+                  '&& rm -rf "ZXsettings.zip" "ZXsettings"')
+        else:
+            print('Settings are not available before UPR-ZX v1')
+
 rule install_item_rando:
+    output:
+        cli = _item_rando_cli,
+        mode = _item_rando_mode_file,
     params:
         exe_extension = _exe_extension,
         zip_name = _zip_name,
         zip_dir = _zip_dir,
         version = _item_rando_version,
         rando_dir = _item_rando_dir,
-    output:
-        _item_rando_cli,
     shell:
         'wget -q -nc https://github.com/choatix/Pokemon-Crystal-Item-Randomizer/releases/download/v{params.version}/{params.zip_name}.zip ' \
         '&& unzip -oqq "{params.zip_name}.zip" && ' \
@@ -58,30 +93,31 @@ rule install_item_rando:
 
 rule clone_baserom:
     output:
-        pathlib.Path(config['vanilla_rom']).parent / 'Makefile'
+        _vanilla_rom_file.parent / 'Makefile',
     params:
-        dest_dir = pathlib.Path(config['vanilla_rom']).parent.resolve()
+        dest_dir = _vanilla_rom_file.parent,
     shell:
-        'git clone --recursive https://github.com/pret/pokecrystal.git {params.dest_dir}'
+        'git clone --recursive https://github.com/pret/pokecrystal.git "{params.dest_dir}"'
 
 rule build_baserom:
     input:
         rules.clone_baserom.output,
     output:
-        config['vanilla_rom'],
+        _vanilla_rom_file,
     params:
-        bind_dir = pathlib.Path(config['vanilla_rom']).parent.resolve()
+        bind_dir = _vanilla_rom_file.parent,
     threads:
         64
     shell:
-        'docker run --rm -v "{params.bind_dir}":/rom -w /rom kemenaran/rgbds:0.6.0 make -j {threads} crystal11'
+        'docker run --rm -v "{params.bind_dir}":/rom -w /rom kemenaran/rgbds:0.6.0 ' \
+        'make -j {threads} crystal11'
 
 rule download_flips:
     output:
         _flips,
     shell:
         'wget -q -nc https://dl.smwcentral.net/11474/floating.zip ' \
-        '&& unzip -qqo floating.zip -d floating && ' \
+        '&& unzip -qqo floating.zip -d "{_flips.parent}" && ' \
         'rm -f floating.zip'
 
 rule download_speedchoice:
@@ -94,7 +130,7 @@ rule download_speedchoice:
         version=_speedchoice_version,
         version_nodots=_speedchoice_version_no_dots,
     run:
-        if tuple(int(x) for x in params.version.split('.')) < (8,):
+        if _speedchoice_version_tuple < (8,):
             shell('wget -q -nc https://github.com/choatix/pokecrystal-speedchoice/releases/download/v{params.version}/Speedchoice.zip '
                   '&& unzip -qqo Speedchoice.zip -d Speedchoice '
                   '&& "{input.flips}" -a Speedchoice/Patches/VTo{params.version_nodots}.ips "{input.baserom}" "{output}" '
@@ -116,7 +152,7 @@ rule invoke_zx:
     input:
         baserom=rules.download_speedchoice.output,
         jar=rules.install_zx.output,
-        settings=pathlib.Path(config['zxplus_settings']).resolve() / (config['zx_preset'] + '.rnqs'),
+        settings=rules.download_zx_settings.output,
     params:
         seed_arg=expand('# TODO: zxplus cli to support custom seed', seed=config['zx_seed']) if config['zx_seed'] else '',
     output:
@@ -127,8 +163,8 @@ rule invoke_zx:
 rule invoke_itemrando:
     input:
         zxrom=rules.invoke_zx.output,
-        cli=rules.install_item_rando.output,
-        settings=_item_rando_cli.parent / 'Modes' / (config['item_preset'] + '.yml'),
+        cli=rules.install_item_rando.output.cli,
+        settings=rules.install_item_rando.output.mode,
     output:
         temp(expand('{outs}', outs=tempfile.mktemp(suffix='.gbc'))),
     params:
